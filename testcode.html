@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Text + Canvas Side by Side</title>
+  <style>
+    .container {
+      display: flex;          /* 横並び */
+      align-items: flex-start; 
+    }
+    .text-box {
+      width: 200px;           /* 左の幅 */
+      margin-right: 20px;     /* キャンバスとの間隔 */
+      font-family: sans-serif;
+    }
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="text-box">
+      <p id="myText">ここにテキストが入ります</p>
+    </div>
+    <canvas id="myCanvas" width="400" height="300"></canvas>
+  </div>
+
+  <script>
+    // pタグにテキストを動的に入れる
+    document.getElementById("myText").textContent = "JavaScriptで更新したテキストです";
+
+    // canvasに描画
+    const ctx = document.getElementById("myCanvas").getContext("2d");
+    ctx.fillStyle = "lightblue";
+    ctx.fillRect(0, 0, 400, 300);
+    ctx.fillStyle = "black";
+    ctx.font = "20px sans-serif";
+    ctx.fillText("Hello Canvas!", 20, 50);
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>4択クイズサンプル</title>
+</head>
+<body>
+  <h1>クイズ</h1>
+  <div id="area">日本の首都は</div>
+   
+  <div id="choice_area">しばらくお待ちください…</div>
+  <script>
+    // 4択の内容を準備
+    const choices = ["あ", "い", "う", "え"];
+    const after=()=>{
+      const area = document.getElementById("area");
+      choices.forEach(text => {
+        const btn = document.createElement("button");
+        btn.style.display = "block";
+        btn.textContent = text;
+        // btn.style.display = "block"; // 縦に並べる
+        // btn.onclick = () => alert("あなたは「" + text + "」を選びました");
+        area.appendChild(btn);
+    })
+  }
+    // 一定時間（3秒）経過したら選択肢を表示
+    setTimeout( after   , 3000); // 3000ミリ秒 = 3秒
+  </script>
+</body>
+</html>

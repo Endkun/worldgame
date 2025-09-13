@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>自動でテキスト追加</title>
+<style>
+  #log {
+    border: 1px solid black;
+    width: 200px;
+    height: 150px;
+    overflow-y: auto;  /* 多くなったらスクロール */
+    font-family: sans-serif;
+    padding: 5px;
+  }
+  p {
+    margin: 2px 0; /* 行間の調整 */
+  }
+</style>
+</head>
+<body>
+
+<div id="log"></div>
+
+<script>
+  const log = document.getElementById("log");
+  let counter = 1;
+
+  function addMessage() {
+    const p = document.createElement("p");
+    p.textContent = "メッセージ " + counter;
+    // 一番上に追加
+    log.insertBefore(p, log.firstChild);
+    counter++;
+  }
+
+  // 2秒ごとに自動追加
+  setInterval(addMessage, 2000);
+</script>
+
+</body>
+</html>

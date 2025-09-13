@@ -1,0 +1,176 @@
+    すとーりー 
+    Q1.
+    AIは本当に地図を読めるのかをやってみた
+    最初白地図にムンバイの位置を点で出すよう指示したが、AIは的外れの場所に点を出した
+    その次にモスクワの位置を点で出すように指示したが、AIはまた的外れな場所に点を出した
+    この時点ではAIは都市(国)の位置を理解してないと思っていた
+    その次にロンドンを点で出すように指示したら、また的外れだった
+    自分はある規則性に気づき、パリの点を出すよう指示した
+    何に気づいたでしょうか？
+     1.全ての都市の点の位置がランダムに置かれていた 
+     2.全ての都市の点の位置が一定の方向にズレていた(正解)
+     3.全ての都市の点の位置が南半球側に偏って表示されていた
+    ----正解後
+    ロンドンとパリに置かれた点を見て、自分はある仮説を立てた(具体的な位置は分かってるが、地図が読めてないこと)
+    その後も東京、ベルリン、大阪、ワルシャワと点を増やさせた
+    そしたらすべてが規則性に乗っ取ってズレていたので、AIに修正
+    修正後はしっかりと点がなっていた
+    ------------------------------------------------------------
+    Q2
+    AIにどうやって点を打つか聞いたところ、このプログラムを出してきた
+    このコードを修正してください
+    (初級・中級・上級・達人クラスに分かれる)
+    ------------------------------------------------------------
+    初級
+    const canvas = document.getElementById("worldMap");
+    const ctx = canvas.getContext("2d");
+    let ly = （あ）
+    let lx = （い）
+    const cities = [
+      { name: "Mumbai", lat: 19.0760, lon: 72.8777, color: "orange" },
+      { name: "Tokyo", lat: 35.6764, lon: 139.6500, color: "blue" },
+      { name: "New York", lat: 40.7128, lon: -74.0060, color: "green" },
+      { name: "Moscow", lat: 55.7558, lon: 37.6173, color: "red" },
+      { name: "Paris", lat: 48.8566, lon: 2.3522, color: "purple" },
+      { name: "London", lat: 51.5074, lon: -0.1278, color: "brown" },
+      { name: "Berlin", lat: 52.5200, lon: 13.4050, color: "cyan" },
+      { name: "Warsaw", lat: 52.2297, lon: 21.0122, color: "magenta" },
+      { name: "Osaka", lat: 34.6937, lon: 135.5023, color: "darkviolet" }
+    ];
+
+    // 地図画像を読み込んでから描画
+    const img = new Image();
+    img.src = "world_map.png";
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      for (const city of cities) {
+        city.lon += lx
+        city.lat += ly
+        // 緯度経度をピクセル座標に変換（equirectangular projection）
+        const x = ((city.lon + 180) / 360) * canvas.width;
+        const y = ((90 - city.lat) / 180) * canvas.height;
+
+        // 円で都市を描画
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, 2 * Math.PI);
+        ctx.fillStyle = city.color;
+        ctx.fill();
+
+        // テキスト描画
+        ctx.font = "bold 14px sans-serif";
+        ctx.fillText(city.name, x + 10, y - 10);
+      }
+    };
+    Q.あといに当てはまるのはどれか答えてください
+    あ
+     1.30
+     2.-30(正解)
+    い
+     3.-149(正解)
+     4.149
+    -------------------------------------------------------------------
+    中級
+    const canvas = document.getElementById("worldMap");
+    const ctx = canvas.getContext("2d");
+    let ly = -30
+    let lx = -149
+    const cities = [
+      { name: "Mumbai", lat: 19.0760, lon: 72.8777, color: "orange" },
+      { name: "Tokyo", lat: 35.6764, lon: 139.6500, color: "blue" },
+      { name: "New York", lat: 40.7128, lon: -74.0060, color: "green" },
+      { name: "Moscow", lat: 55.7558, lon: 37.6173, color: "red" },
+      { name: "Paris", lat: 48.8566, lon: 2.3522, color: "purple" },
+      { name: "London", lat: 51.5074, lon: -0.1278, color: "brown" },
+      { name: "Berlin", lat: 52.5200, lon: 13.4050, color: "cyan" },
+      { name: "Warsaw", lat: 52.2297, lon: 21.0122, color: "magenta" },
+      { name: "Osaka", lat: 34.6937, lon: 135.5023, color: "darkviolet" }
+    ];
+
+    // 地図画像を読み込んでから描画
+    const img = new Image();
+    img.src = "world_map.png";
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      for (const city of cities) {
+        city.lon += （あ）
+        city.lat += （い）
+        // 緯度経度をピクセル座標に変換（equirectangular projection）
+        const x = ((city.lon + 180) / 360) * canvas.width;
+        const y = ((90 - city.lat) / 180) * canvas.height;
+
+        // 円で都市を描画
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, 2 * Math.PI);
+        ctx.fillStyle = city.color;
+        ctx.fill();
+
+        // テキスト描画
+        ctx.font = "bold 14px sans-serif";
+        ctx.fillText(city.name, x + 10, y - 10);
+      }
+    };
+    Q.あといに当てはまるのはどれか答えてください
+    あ
+     1.lx
+     2.ly
+    い
+     3.lx
+     4.ly
+    -------------------------------------------------------------------
+    上級
+    const canvas = document.getElementById("worldMap");
+    const ctx = canvas.getContext("2d");
+    let ly = 0
+    let lx = 0
+    const cities = [
+      { name: "Mumbai", lat: 19.0760, lon: 72.8777, color: "orange" },
+      { name: "Tokyo", lat: 35.6764, lon: 139.6500, color: "blue" },
+      { name: "New York", lat: 40.7128, lon: -74.0060, color: "green" },
+      { name: "Moscow", lat: 55.7558, lon: 37.6173, color: "red" },
+      { name: "Paris", lat: 48.8566, lon: 2.3522, color: "purple" },
+      { name: "London", lat: 51.5074, lon: -0.1278, color: "brown" },
+      { name: "Berlin", lat: 52.5200, lon: 13.4050, color: "cyan" },
+      { name: "Warsaw", lat: 52.2297, lon: 21.0122, color: "magenta" },
+      { name: "Osaka", lat: 34.6937, lon: 135.5023, color: "darkviolet" }
+    ];
+
+    // 地図画像を読み込んでから描画
+    const img = new Image();
+    img.src = "world_map.png";
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      for (const city of cities) {
+        // 緯度経度をピクセル座標に変換(equirectangular projection)
+        city.lon += lx
+        city.lat += ly
+        const x = ((city.lon + 180) / 360) * canvas.width;
+        const y = ((90 - city.lat) / 180) * canvas.height;
+
+        // 円で都市を描画
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, 2 * Math.PI);
+        ctx.fillStyle = city.color;
+        ctx.fill();
+
+        // テキスト描画
+        ctx.font = "bold 14px sans-serif";
+        ctx.fillText(city.name, x + 10, y - 10);
+      }
+    };
+    Q.足りない箇所があるので書き加えてください
+    (実際にlxが-30の±5の地点、lyが-149の±5の地点の地点ならokにする)
+    ------------------------------------------------------------
+    おわり
+    ------------------------------------------------------------
+    私はプログラミングそのものが一つのゲームであると考えました
+    なぜなら、ゲームの要素として以下のことがあり、
+        目標：プレイヤーが目指す達成すべき事柄。
+        課題：目標達成を阻むもの。
+        選択：プレイヤーの行動を決定する要素。
+        関与：プレイヤーがゲームや結果に影響を与えること。
+        境界：ゲームの世界を区切る空間的、時間的な区切り。
+        ルール：ゲーム世界で適用される規則。
+        道具：ゲームに必要な情報を含むもの（プレイヤー自身も含む）。
+    ゲームに必要なこれらの要素がプログラミングに全て当てはまっているからです
+    ここまでが主催者あてのメッセージであると同時に、ゲームの基本コンセプトです。
+    ------------------------------------------------------------

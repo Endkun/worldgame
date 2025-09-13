@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>テキスト追加デモ</title>
+<style>
+  #log {
+    border: 1px solid black;
+    width: 200px;
+    height: 150px;
+    overflow-y: auto;  /* 多くなったらスクロール */
+    font-family: sans-serif;
+    padding: 5px;
+  }
+  p {
+    margin: 2px 0; /* すき間を調整 */
+  }
+</style>
+</head>
+<body>
+
+<div id="log"></div>
+<button onclick="addMessage('aaa')">aaa追加</button>
+<button onclick="addMessage('bbb')">bbb追加</button>
+
+<script>
+  const log = document.getElementById("log");
+
+  function addMessage(text) {
+    const p = document.createElement("p");
+    p.textContent = text;
+    // ▼ 新しいものを上に追加する
+    log.insertBefore(p, log.firstChild);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ClassとCSSの関係デモ</title>
+<style>
+  /* containerクラス → 全体の枠（赤背景） */
+  .container {
+    display: flex;          
+    align-items: flex-start; 
+    background-color: rgba(255, 0, 0, 0.2); /* 赤背景で見える化 */
+    padding: 10px;
+  }
+
+  /* text-boxクラス → 左のテキスト枠（青背景） */
+  .text-box {
+    width: 200px;           
+    margin-right: 20px;     
+    font-family: sans-serif;
+    background-color: rgba(0, 0, 255, 0.2); /* 青背景 */
+    padding: 5px;
+  }
+
+  /* canvasタグ → 全てのキャンバス（緑背景） */
+  canvas {
+    border: 1px solid black;
+    background-color: rgba(0, 255, 0, 0.2); /* 緑背景 */
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="text-box">
+    <p id="myText">ここにテキストが入ります</p>
+  </div>
+  <canvas id="myCanvas" width="200" height="150"></canvas>
+</div>
+
+<script>
+  // テキストを書き換え
+  document.getElementById("myText").textContent = "これは .text-box の中のテキストです";
+
+  // キャンバスに描画
+  const ctx = document.getElementById("myCanvas").getContext("2d");
+  ctx.fillStyle = "black";
+  ctx.font = "16px sans-serif";
+  ctx.fillText("Canvasエリア", 20, 80);
+</script>
+
+</body>
+</html>
