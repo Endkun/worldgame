@@ -66,10 +66,12 @@
 <div class="container">
   <div class="text-box">
     <p id="myText">何もなし</p>
+    <div id="choice_area" style="text-align:left">
+    </div>
+    <h2 id="ans1"></h2>
   </div>
   <canvas id="worldMap" width="800" height="600"></canvas>
 </div>
-<div id="choice_area">しばらくお待ちください…</div>
 <script src="script.js">
 </script> 
 <script src="mojiscript.js">
@@ -83,9 +85,16 @@
         q_btn.style.display = "block";
         q_btn.textContent = text;
         quesiton_button.appendChild(q_btn);
+        q_btn.onclick = function(){
+            if (text == "2.全ての都市の点の位置が一定の方向にズレていた"){
+              ans1.textContent = "あってるよ"
+            }else{
+              ans1.textContent = "ちがうよ"
+            }
+        }
     })
   }
-  setTimeout(tomeru,5000)
+  setTimeout(tomeru,52000)
 </script>
 </body>
 </html>
