@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ボタン消すテスト</title>
+</head>
+<body>
+  <h1>ボタンを消すサンプル</h1>
+
+  <!-- ボタン -->
+  <button id="myBtn">消えるボタン</button>
+
+  <!-- JavaScript -->
+  <script>
+    // ボタンクリック時に削除する
+    document.getElementById("myBtn").addEventListener("click", function() {
+      this.remove();
+    });
+  </script>
+</body>
+</html>

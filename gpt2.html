@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主要都市地図</title>
+    <style>
+        /* 地図のコンテナ設定 */
+        #map-container {
+            position: relative; /* 子要素（都市の点）を絶対位置で配置するための基準 */
+            display: inline-block; /* 画像のサイズに合わせる */
+            /* 後のために、実際の画像サイズに合わせて高さを調整してください */
+            width: 800px; /* 例: 画像の幅 */
+            height: 500px; /* 例: 画像の高さ */
+            border: 1px solid #ccc;
+        }
+
+        /* 背景画像として地図を設定 */
+        #map-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+            /* **注意:** ここにアップロードされた画像（image_7a4b31.png）のURLを指定します。
+               ローカルで実行する場合は、ファイル名を指定するか、ローカルパスを使用してください。 */
+            /* 今回はアップロードされた画像のサイズと一致させるため、背景ではなくimgタグを使用します */
+        }
+
+        /* 都市の点を表すCSS */
+        .city-marker {
+            position: absolute; /* 親コンテナ（#map-container）を基準に絶対配置 */
+            width: 12px; /* 点の大きさ */
+            height: 12px;
+            background-color: red; /* 点の色 */
+            border-radius: 50%; /* 円形にする */
+            transform: translate(-50%, -50%); /* 点の中心を座標に合わせるための調整 */
+            border: 2px solid white;
+            z-index: 10;
+            cursor: help; /* マウスオーバーでカーソルを変更 */
+        }
+
+        /* 都市の名前（ラベル）のCSS */
+        .city-label {
+            position: absolute;
+            white-space: nowrap; /* テキストが折り返さないように */
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            padding: 2px 5px;
+            background-color: rgba(255, 255, 255, 0.7); /* 半透明の背景 */
+            border: 1px solid #333;
+            border-radius: 3px;
+            pointer-events: none; /* マウスイベントを無視し、下のマーカーをクリックできるようにする */
+            transform: translate(-50%, -150%); /* マーカーの上に配置 */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="map-container">
+        <img id="map-image" src="world_map.png" alt="世界地図">
+    </div>
+
+    <script>
+        // 地図の要素を取得
+        const mapContainer = document.getElementById('map-container');
+        const mapImage = document.getElementById('map-image');
+
+        // 都市のデータ（緯度・経度）
+        // **この緯度経度は、添付画像（正距円筒図法に似たもの）の**
+        // **表示位置に合わせて調整が必要です。**
+        // 一般的な緯度経度から、**画面上のピクセル位置 (X, Y)** へと変換します。
+        const cities = [
+            { name: "東京", lat: 35.6895, lon: 139.6917, x: 670, y: 325 },
+            { name: "モスクワ", lat: 55.7558, lon: 37.6173, x: 330, y: 190 },
+            { name: "ロンドン", lat: 51.5074, lon: -0.1278, x: 235, y: 220 },
+            { name: "ニューヨーク", lat: 40.7128, lon: -74.0060, x: 80, y: 270 }
+        ];
+
+        // 地図の画像が完全に読み込まれた後に処理を実行
+        mapImage.onload = () => {
+            // 画像の実際の幅と高さを取得
+            const mapWidth = mapImage.offsetWidth;
+            const mapHeight = mapImage.offsetHeight;
+
+            // コンテナのサイズを画像に合わせる
+            mapContainer.style.width = `${mapWidth}px`;
+            mapContainer.style.height = `${mapHeight}px`;
+
+            // マーカーを配置する関数
+            function placeMarker(city) {
+                // 1. マーカー（点）を作成
+                const marker = document.createElement('div');
+                marker.className = 'city-marker';
+                
+                // 画像上の相対的な位置（0～100%）に変換
+                // x: 0 (左端) - 800 (右端), y: 0 (上端) - 500 (下端)として仮定
+                // アップロードされた画像サイズに合わせて、x/y の値を調整してください。
+                
+                // ここではcities配列に設定したピクセル位置 (x, y) を使用します
+                marker.style.left = `${city.x}px`;
+                marker.style.top = `${city.y}px`;
+                mapContainer.appendChild(marker);
+
+                // 2. ラベル（名前）を作成
+                const label = document.createElement('div');
+                label.className = 'city-label';
+                label.textContent = city.name;
+                
+                // ラベルの位置をマーカーと同じに設定
+                label.style.left = `${city.x}px`;
+                label.style.top = `${city.y}px`;
+                mapContainer.appendChild(label);
+            }
+
+            // 全ての都市にマーカーを配置
+            cities.forEach(placeMarker);
+        };
+        
+        // 画像がキャッシュされている場合に備えて、手動でロードイベントをトリガー
+        if (mapImage.complete) {
+            mapImage.onload();
+        }
+
+    </script>
+
+</body>
+</html>

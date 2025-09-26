@@ -66,7 +66,7 @@
 <div class="container">
   <div class="text-box">
     <p id="myText">何もなし</p>
-    <div id="choice_area" style="text-align:left">
+    <div id="choice_area" style="text-align:left">何に気づいたでしょうか？
     </div>
     <h2 id="ans1"></h2>
   </div>
@@ -77,8 +77,18 @@
 <script src="mojiscript.js">
 </script>
 <script>
+  let tigau = true
   function tomeru(){
-    let mozi = ["1.全ての都市の点の位置がランダムに置かれていた","2.全ての都市の点の位置が一定の方向にズレていた","3.全ての都市の点の位置が南半球側に偏って表示されていた"]
+    let mozi = [
+  "1.全ての都市の点の位置がランダムに置かれていた",
+  "2.全ての都市の点の位置が一定の方向にズレていた",
+  "3.全ての都市の点の位置が南半球側に偏って表示されていた",
+  "4.地図の投影法の影響で都市の位置が歪んで表示されていた",
+  "5.都市データの座標が古く、現在の位置と一致していなかった",
+  "6.地図描画時の縮尺設定が誤っていた",
+  "7.座標データの緯度・経度の単位変換ミスがあった",
+  "8.描画用のキャンバスサイズと座標系が一致していなかった",
+  "9.プログラムのループや配置計算にバグがあり、位置がずれていた"];
     const quesiton_button = document.getElementById("choice_area");
     mozi.forEach(text => {
         const q_btn = document.createElement("button");
@@ -90,11 +100,15 @@
               ans1.textContent = "あってるよ"
             }else{
               ans1.textContent = "ちがうよ"
+              tigau = true
+              setTimeout(mozi, 2000);
+              console.log(tigau)
             }
         }
+        return tigau
     })
   }
-  setTimeout(tomeru,52000)
+  setTimeout(tomeru,15000)
 </script>
 </body>
 </html>

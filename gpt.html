@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>World Map — Major Cities</title>
+<style>
+  body { font-family: system-ui, "Hiragino Kaku Gothic ProN", "メイリオ", sans-serif; margin: 20px; background:#f7f7f7; }
+  .map-wrap { position: relative; display: inline-block; box-shadow: 0 2px 8px rgba(0,0,0,.25); border:1px solid #ccc; background:#fff; }
+  img.world { display:block; max-width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
+  .marker {
+    position: absolute;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #e53935;
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0,0,0,.5);
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+  .label {
+    position: absolute;
+    transform: translate(-6px, -26px);
+    white-space: nowrap;
+    font-size: 12px;
+    background: rgba(255,255,255,0.9);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    pointer-events: none;
+  }
+  .controls { margin-top: 12px; }
+  .controls button { padding:6px 10px; font-size:14px; margin-right:8px; }
+</style>
+</head>
+<body>
+
+<h1>世界地図：主要都市プロット</h1>
+
+<div class="map-wrap" id="mapWrap">
+  <!-- 画像パスをあなたのファイルに合わせてください -->
+  <img id="worldImg" class="world" src="world_map.png" alt="world map">
+</div>
+
+<div class="controls">
+  <button id="toggleLabels">ラベルの表示/非表示</button>
+  <label>地図中心経度：
+    <input id="centerLon" type="number" value="180" step="1" style="width:80px;">
+  </label>
+  <button id="applyCenter">反映</button>
+</div>
+
+<script>
+/*
+  基本アイディア：
+  - 地図は等角（equirectangular）投影を想定
+  - x座標 = ((lon - centerLon) を360度でラップして [0,360) にし、幅にスケール)
+  - y座標 = (90 - lat) / 180 * height
+  - centerLongitude は地図の中心（画像中央が示す経度）を指定 (例: 180)
+*/
+
+const cities = [
+  // name, lat, lon
+  ["Tokyo", 35.6895, 139.6917],
+  ["Yokohama", 35.4437, 139.6380],
+  ["Seoul", 37.5665, 126.9780],
+  ["Beijing", 39.9042, 116.4074],
+  ["Shanghai", 31.2304, 121.4737],
+  ["Hong Kong", 22.3193, 114.1694],
+  ["Singapore", 1.3521, 103.8198],
+  ["Jakarta", -6.2088, 106.8456],
+  ["Mumbai", 19.0760, 72.8777],
+  ["Delhi", 28.7041, 77.1025],
+  ["Dubai", 25.2048, 55.2708],
+  ["Istanbul", 41.0082, 28.9784],
+  ["Moscow", 55.7558, 37.6173],
+  ["London", 51.5074, -0.1278],
+  ["Paris", 48.8566, 2.3522],
+  ["Berlin", 52.5200, 13.4050],
+  ["Cairo", 30.0444, 31.2357],
+  ["Lagos", 6.5244, 3.3792],
+  ["Cape Town", -33.9249, 18.4241],
+  ["Sydney", -33.8688, 151.2093],
+  ["Melbourne", -37.8136, 144.9631],
+  ["Los Angeles", 34.0522, -118.2437],
+  ["San Francisco", 37.7749, -122.4194],
+  ["New York", 40.7128, -74.0060],
+  ["Chicago", 41.8781, -87.6298],
+  ["Toronto", 43.6532, -79.3832],
+  ["Mexico City", 19.4326, -99.1332],
+  ["Sao Paulo", -23.5505, -46.6333],
+  ["Buenos Aires", -34.6037, -58.3816],
+  ["Honolulu", 21.3069, -157.8583]
+];
+
+const mapWrap = document.getElementById('mapWrap');
+const img = document.getElementById('worldImg');
+let showLabels = true;
+
+function wrap360(x) {
+  // 0 <= x < 360
+  return ((x % 360) + 360) % 360;
+}
+
+function lonToX(lon, width, centerLon) {
+  // centerLon: 画像中央が示す経度（例: 180）
+  // 経度を centerLon を中心にシフトしてから 0..360 にする
+  const shifted = wrap360(lon - centerLon + 180); // now 0..360
+  return (shifted / 360) * width;
+}
+
+function latToY(lat, height) {
+  // 緯度は -90..+90。上が北（+90）
+  return ((90 - lat) / 180) * height;
+}
+
+function clearMarkers() {
+  const old = mapWrap.querySelectorAll('.marker, .label');
+  old.forEach(n => n.remove());
+}
+
+function plotCities(centerLon) {
+  clearMarkers();
+  const w = img.naturalWidth;
+  const h = img.naturalHeight;
+
+  // 画像が表示上縮尺されている場合は getBoundingClientRect を参照してスケールをかける
+  const rect = img.getBoundingClientRect();
+  const dispW = rect.width, dispH = rect.height;
+  const scaleX = dispW / w;
+  const scaleY = dispH / h;
+
+  cities.forEach(([name, lat, lon]) => {
+    const x = lonToX(lon, w, centerLon);
+    const y = latToY(lat, h);
+
+    // マーカー
+    const mk = document.createElement('div');
+    mk.className = 'marker';
+    mk.style.left = (x * scaleX) + 'px';
+    mk.style.top  = (y * scaleY) + 'px';
+    mk.title = name + ` (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
+    mapWrap.appendChild(mk);
+
+    // ラベル
+    const lb = document.createElement('div');
+    lb.className = 'label';
+    lb.style.left = (x * scaleX) + 'px';
+    lb.style.top  = (y * scaleY) + 'px';
+    lb.textContent = name;
+    lb.style.display = showLabels ? 'block' : 'none';
+    mapWrap.appendChild(lb);
+
+    // クリックで簡易ポップアップ（例）
+    mk.addEventListener('click', (e) => {
+      alert(name + "\\n緯度: " + lat + "\\n経度: " + lon);
+    });
+  });
+}
+
+// 画像の読み込み後に描画
+img.addEventListener('load', () => {
+  // マップを表示幅に合わせて包むために mapWrap のサイズを画像と一致させる
+  // （画像のレスポンシブ表示に合わせる）
+  mapWrap.style.width = img.getBoundingClientRect().width + 'px';
+  mapWrap.style.height = img.getBoundingClientRect().height + 'px';
+
+  const centerLonInput = document.getElementById('centerLon');
+  plotCities(Number(centerLonInput.value));
+});
+
+// ウィンドウリサイズ対応（画面サイズ変更で再配置）
+window.addEventListener('resize', () => {
+  const centerLon = Number(document.getElementById('centerLon').value);
+  // マップラッパーの幅を再設定（画像の実表示幅に合わせる）
+  mapWrap.style.width = img.getBoundingClientRect().width + 'px';
+  mapWrap.style.height = img.getBoundingClientRect().height + 'px';
+  plotCities(centerLon);
+});
+
+// コントロール
+document.getElementById('toggleLabels').addEventListener('click', () => {
+  showLabels = !showLabels;
+  document.querySelectorAll('.label').forEach(el => el.style.display = showLabels ? 'block' : 'none');
+});
+
+document.getElementById('applyCenter').addEventListener('click', () => {
+  const centerLon = Number(document.getElementById('centerLon').value);
+  if (isNaN(centerLon) || centerLon < -180 || centerLon > 540) {
+    alert('centerLongitude は -180 〜 540 の値で入力してください（360 のラップを許容）。');
+    return;
+  }
+  plotCities(centerLon);
+});
+</script>
+
+</body>
+</html>

@@ -5,14 +5,18 @@ let lx = 0//-149
 let c = 0
 let interval_youzumi = []
 let interval = [1000]
-let interval_archive = [1500,2500,1500]
+let interval_archive = [1500,2500,1500,10,10,10,10]
 const cities = [
 ];
 const archives = [
   { name: "Mumbai", lat: 19.0760, lon: 72.8777, color: "orange" },
   { name: "Moscow", lat: 55.7558, lon: 37.6173, color: "red" },
   { name: "London", lat: 51.5074, lon: -0.1278, color: "brown" },
-  { name: "Paris", lat: 48.8566, lon: 2.3522, color: "purple" }
+  { name: "Tokyo", lat: 35.6895, lon: 139.6917, color: "blue" },
+  { name: "Dubai", lat: 25.276987, lon: 55.296249, color: "gold" },
+  { name: "Cape Town", lat: -33.9249, lon: 18.4241, color: "green" },
+  { name: "Ulaanbaatar", lat: 47.8864, lon: 106.9057, color: "teal" },
+  { name: "Paris", lat: 48.8566, lon: 2.3522, color: "purple" },
 ];
 // 地図画像を読み込んでから描画
 const img = new Image();
