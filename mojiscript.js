@@ -1,34 +1,78 @@
-
 const kotoba = document.getElementById("myText");
-const naiyou = ["AIは本当に地図を読めるのかをやってみた",
-                "最初白地図にムンバイの位置を点で出すよう指示したが、AIは的外れの場所に点を出した",
-                "その次にモスクワの位置を点で出すように指示したが、AIはまた的外れな場所に点を出した",
-                "この時点ではAIは都市(国)の位置を理解してないと思っていた",
-                "その次にロンドンを点で出すように指示したら、また的外れだった",
-                "自分はある規則性に気づき、パリの点を出すよう指示した"]
+const naiyou = [
+    "AIは本当に地図を読めるのかをやってみた",
+    "最初白地図にムンバイの位置を点で出すよう指示したが、AIは的外れの場所に点を出した",
+    "その次にモスクワの位置を点で出すように指示したが、AIはまた的外れな場所に点を出した",
+    "そこである原因に気づいた。何に気がついたでしょうか？"
+];
+const naiyou2 = [
+    "その次にロンドンを点で出すように指示したら、また的外れだった",
+    "今度は東京に点を置いた。大西洋へ行ってしまった",
+    "さらにケープタウンに置いてみたが、ズレている",
+    "次にウランバートルに置いたら、カナダのほうへ行ってしまった",
+    "最後に自分はこの規則性に気づき、パリの点を出すよう指示した"
+];
+let i = 0;
+let j = 0;
+let k = 0
+let l = 0
+const per = 30;
+let count = 0;
+let mojisuuu = 0;
+naiyou.forEach((txt, idx) => {
+    mojisuuu += txt.length;
+});
+console.log("naiyouの総文字数:", mojisuuu);
 
-let i = 0
-let j = 0 
-//let timing = 0 
+// ==== アニメーション ====
 function mozi(){
-    kotoba.textContent = naiyou[j].slice(0, i +1);
-    i++
-    console.log(naiyou[i])
-    count = 0
-    if(i < naiyou[j].length){
-        setTimeout(mozi, 200);
-    }else{
-        if (tigau == true){ 
-            j++
-            i = 0
-            setTimeout(mozi, 2000);
-            tigau = false
+    if (j < naiyou.length) {
+        if(i < naiyou[j].length){
+            count++;
+            if (count >= per){
+                kotoba.textContent = naiyou[j].slice(0, i + 1);
+                i++;
+                count = 0;
+            }
+        } else {
+            // 文章が終わったら次へ
+            j++;
+            i = 0;
+            if (j < naiyou.length) {
+                kotoba.textContent = ""; 
+            }
         }
-        console.log(tigau)
-        //timing = 1
+        requestAnimationFrame(mozi);
+    }
+}
+function mozi2(){
+    if (l < naiyou2.length) { //j = l i = k
+        if(k < naiyou2[l].length){
+            //console.log("mozi2",tigau)
+            count++;
+            if (count >= per){
+                kotoba.textContent = naiyou2[l].slice(0, k + 1);
+                k++;
+                count = 0;
+            }
+        } else {
+            console.log(tigau)
+            if (tigau == true){
+                // 文章が終わったら次へ
+                l++;
+                k = 0;
+                if (l < naiyou2.length) {
+                    kotoba.textContent = ""; 
+                }
+                tigau = false
+            }
+        }
+        requestAnimationFrame(mozi2);
     }
 }
 mozi();
+
+
 // document.getElementById("myText").textContent = "何も";
 // document.getElementById("myText").textContent = "何もな";
 // document.getElementById("myText").textContent = "何もなし";

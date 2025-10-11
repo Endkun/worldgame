@@ -3,9 +3,12 @@ const ctx = canvas.getContext("2d");
 let ly = 0//-30
 let lx = 0//-149
 let c = 0
+let tigau = false
+let tigau2 = false
 let interval_youzumi = []
 let interval = [1000]
-let interval_archive = [1500,2500,1500,10,10,10,10]
+let interval_archive = [1500]
+let interval_archive2 = [2500,1000,1000,1000,1000,1000]
 const cities = [
 ];
 const archives = [
@@ -13,7 +16,6 @@ const archives = [
   { name: "Moscow", lat: 55.7558, lon: 37.6173, color: "red" },
   { name: "London", lat: 51.5074, lon: -0.1278, color: "brown" },
   { name: "Tokyo", lat: 35.6895, lon: 139.6917, color: "blue" },
-  { name: "Dubai", lat: 25.276987, lon: 55.296249, color: "gold" },
   { name: "Cape Town", lat: -33.9249, lon: 18.4241, color: "green" },
   { name: "Ulaanbaatar", lat: 47.8864, lon: 106.9057, color: "teal" },
   { name: "Paris", lat: 48.8566, lon: 2.3522, color: "purple" },
@@ -23,13 +25,21 @@ const img = new Image();
 img.src = "world_map.png";
 img.onload = function () {
   ctx.drawImage(img, 0, 0, 800, 600);
+  //console.log("tigau",tigau)
   c++
   if (c >= interval[0]){
     cities.push(archives.shift())
     interval_youzumi.push(interval.shift())
     interval.push(interval_archive.shift())
-    console.log(interval)
+    //console.log(interval)
     c = 0
+  }
+  console.log(tigau2)
+  if (tigau2 == true){
+    cities.push(archives.shift())
+    interval_youzumi.push(interval.shift())
+    interval.push(interval_archive.shift())
+    tigau2 = false
   }
   //if (timing == 1){
   //  cities.push(archives.shift())
@@ -52,6 +62,7 @@ img.onload = function () {
     ctx.font = "bold 14px sans-serif";
     ctx.fillText(city.name, x + 10, y - 10);
   }
+  //console.log("a")
   requestAnimationFrame(img.onload);
 };
 

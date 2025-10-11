@@ -63,10 +63,11 @@
 </style>
 </head>
 <body>
+<h1>AIは地図を読めるのか</h1>
 <div class="container">
   <div class="text-box">
     <p id="myText">何もなし</p>
-    <div id="choice_area" style="text-align:left">何に気づいたでしょうか？
+    <div id="choice_area" style="text-align:left">
     </div>
     <h2 id="ans1"></h2>
   </div>
@@ -77,7 +78,6 @@
 <script src="mojiscript.js">
 </script>
 <script>
-  let tigau = true
   function tomeru(){
     let mozi = [
   "1.全ての都市の点の位置がランダムに置かれていた",
@@ -101,14 +101,16 @@
             }else{
               ans1.textContent = "ちがうよ"
               tigau = true
+              tigau2 = true
+              mozi2();
               setTimeout(mozi, 2000);
-              console.log(tigau)
+              //console.log("glaf",tigau)
             }
         }
         return tigau
     })
   }
-  setTimeout(tomeru,15000)
+  setTimeout(tomeru,28000)
 </script>
 </body>
 </html>
