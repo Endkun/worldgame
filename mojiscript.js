@@ -7,6 +7,7 @@ const naiyou = [
 ];
 const naiyou2 = [
     "その次にロンドンを点で出すように指示したら、また的外れだった",
+    "ロンドンの点は西にズレているようだ",
     "今度は東京に点を置いた。大西洋へ行ってしまった",
     "さらにケープタウンに置いてみたが、ズレている",
     "次にウランバートルに置いたら、カナダのほうへ行ってしまった",
@@ -16,7 +17,8 @@ let i = 0;
 let j = 0;
 let k = 0
 let l = 0
-const per = 30;
+let kaiwa = false
+const per = 30; //30
 let count = 0;
 let mojisuuu = 0;
 naiyou.forEach((txt, idx) => {
@@ -56,7 +58,7 @@ function mozi2(){
                 count = 0;
             }
         } else {
-            console.log(tigau)
+            //console.log(tigau)
             if (tigau == true){
                 // 文章が終わったら次へ
                 l++;
@@ -65,7 +67,10 @@ function mozi2(){
                     kotoba.textContent = ""; 
                 }
                 tigau = false
+                console.log("owatta")
+                kaiwa = false
             }
+            //console.log("b",kaiwa)
         }
         requestAnimationFrame(mozi2);
     }

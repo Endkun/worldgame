@@ -79,7 +79,8 @@
 </script>
 <script>
   function tomeru(){
-    let mozi = [
+    let owari = false
+    let kotae = [
   "1.全ての都市の点の位置がランダムに置かれていた",
   "2.全ての都市の点の位置が一定の方向にズレていた",
   "3.全ての都市の点の位置が南半球側に偏って表示されていた",
@@ -90,27 +91,45 @@
   "8.描画用のキャンバスサイズと座標系が一致していなかった",
   "9.プログラムのループや配置計算にバグがあり、位置がずれていた"];
     const quesiton_button = document.getElementById("choice_area");
-    mozi.forEach(text => {
-        const q_btn = document.createElement("button");
-        q_btn.style.display = "block";
-        q_btn.textContent = text;
-        quesiton_button.appendChild(q_btn);
-        q_btn.onclick = function(){
-            if (text == "2.全ての都市の点の位置が一定の方向にズレていた"){
-              ans1.textContent = "あってるよ"
-            }else{
-              ans1.textContent = "ちがうよ"
-              tigau = true
-              tigau2 = true
-              mozi2();
-              setTimeout(mozi, 2000);
-              //console.log("glaf",tigau)
+    for(let i = 0;  i < kotae.length; i++){
+      //console.log(kotae[i])
+      text = kotae[i]
+      const q_btn = document.createElement("button");
+      q_btn.style.display = "block";
+      q_btn.textContent = text;
+      quesiton_button.appendChild(q_btn);
+      q_btn.onclick = kekka()
+    }
+    function kekka(){
+        console.log(text)
+        if (kaiwa == false){
+          if (text == "2.全ての都市の点の位置が一定の方向にズレていた"){
+            ans1.textContent = "正解！おめでとう！"
+            owari = true
+            setTimeout(() => {
+              console.log("1秒経過");
+              setTimeout(() => {
+                console.log("２秒経過");
+                window.close();
+              }, 1000);
+            }, 1000);
+
+          }else{
+            if(owari == false){
+                ans1.textContent = "ちがうよ"
+                tigau = true
+                tigau2 = true
+                kaiwa = true
+                mozi2();
+                setTimeout(mozi, 2000); 
             }
+            //console.log("glaf",tigau)
+          }
+          return tigau
         }
-        return tigau
-    })
+      }//kekkaここまで
   }
-  setTimeout(tomeru,28000)
+  setTimeout(tomeru,2000) //28000
 </script>
 </body>
 </html>
