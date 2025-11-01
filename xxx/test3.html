@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Disable Button</title></head>
+<body>
+  <button id="myBtn">押せないボタン</button>
+  <button id="disableBtn">無効化する</button>
+
+  <script>
+    document.getElementById('disableBtn').addEventListener('click', () => {
+      const b = document.getElementById('myBtn');
+      b.disabled = true;          // 無効化
+      b.textContent = '無効化中';
+    });
+  </script>
+</body>
+</html>
