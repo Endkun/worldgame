@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="message"></p>
+    <script>
+        const msg = document.getElementById("message");
+        function sleep(ms){
+            return new Promise(resolve =>setTimeout(resolve,ms))
+        }
+        const a = "あいうえお"
+        let b = ""
+        function sta(){
+            async function start(){
+                msg.textContent = "すたーと"
+                await sleep(2000)
+                console.log("すたーと")
+            }
+            start()
+        }
+        function rep(){
+            async function repeat(){
+                for(let i of a){
+                    b+= i
+                    console.log(b)
+                    msg.textContent = b
+                    await sleep(2000);   // ← 2秒待つ
+                }
+                msg.textContent = "えんど"  
+                console.log("えんど") 
+            }
+        repeat()
+        }
+        sta()
+        rep()
+    </script>
+</body>
+</html>

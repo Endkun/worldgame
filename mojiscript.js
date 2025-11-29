@@ -10,12 +10,13 @@ const naiyou2 = [
     "今度は東京に点を置いた。大西洋へ行ってしまった",
     "さらにケープタウンに置いてみたが、ズレている",
     "次にウランバートルに置いたら、カナダのほうへ行ってしまった",
-    "最後に自分はこの規則性に気づき、パリの点を出すよう指示した"
+    "最後に自分はこの規則性に気づき、パリの点を出すよう指示した",
+    "--余白--"
 ];
 let i = 0;
 let j = 0;
 let k = 0
-let l = 0
+let l = -1
 const per = 30; //30
 let count = 0;
 let mojisuuu = 0;
@@ -23,7 +24,9 @@ naiyou.forEach((txt, idx) => {
     mojisuuu += txt.length;
 });
 console.log("naiyouの総文字数:", mojisuuu);
-
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 // ==== アニメーション ====
 function mozi(){
     if (j < naiyou.length) {
@@ -45,17 +48,22 @@ function mozi(){
         requestAnimationFrame(mozi);
     }
 }
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 function mozi2(){
     if (l < naiyou2.length) { //j = l i = k
-        if(k < naiyou2[l].length){
-            count++;
-            if (count >= per){
-                kotoba.textContent = naiyou2[l].slice(0, k + 1);
-                k++;
-                count = 0;
+        async function repeat(){
+            for(k = 0; k < naiyou2[l].length; k++){
+                console.log("a")
+                await sleep(150);   // ← 2秒待つ
+                    kotoba.textContent = naiyou2[l].slice(0, k + 1);
             }
-        requestAnimationFrame(mozi2);
+            console.log("ccc")
+            each.forEach(q_btn => q_btn.disabled = false);
+            k = 0
         }
+        repeat(); // ページ読み込み時に即実行
     }
 }
 mozi();

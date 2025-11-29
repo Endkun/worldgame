@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>sleep関数の例</title>
+</head>
+<body>
+  <h2>sleep() 関数のサンプル</h2>
+  <button id="startBtn">2秒待って表示</button>
+  <p id="message"></p>
+
+  <script>
+    a = "あいうえお"
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    const btn = document.getElementById("startBtn");
+    const msg = document.getElementById("message");
+
+    btn.addEventListener("click", async () => {
+      msg.textContent = "待機中...⏳";
+      for(i=0; i<5; i++){
+        await sleep(1000); // 2秒待
+        msg.textContent = a.slice(0, i + 1);
+      }
+      
+    });
+  </script>
+</body>
+</html>

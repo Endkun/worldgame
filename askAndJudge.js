@@ -1,26 +1,3 @@
-function onjudge(){
-  judge(q_btn)
-}
-function judge(q_btn){
-    console.log("b")
-    if (text == "2.全ての都市の点の位置が一定の方向にズレていた"){
-      ans1.textContent = "正解！おめでとう！"
-      setTimeout(() => {
-        console.log("1秒経過");
-        setTimeout(() => {
-          console.log("２秒経過");
-          window.close();
-        }, 1000);
-      }, 1000);
-
-    }else{
-        ans1.textContent = "ちがうよ"
-        mozi2();
-        cities.push(archives2.shift())
-        canvas2();
-        q_btn.disabled = true;
-    }
-}//kekkaここまで
 function ask(){
   let tomeru = false
   let kotae = [
@@ -33,16 +10,44 @@ function ask(){
 "7.座標データの緯度・経度の単位変換ミスがあった",
 "8.描画用のキャンバスサイズと座標系が一致していなかった",
 "9.プログラムのループや配置計算にバグがあり、位置がずれていた"];
+  each = []
   const quesiton_button = document.getElementById("choice_area");
-  for(let i = 0;  i < kotae.length; i++){
-    //console.log(kotae[i])
-    text = kotae[i]
-    const q_btn = document.createElement("button");
-    q_btn.style.display = "block";
-    q_btn.textContent = text;
-    quesiton_button.appendChild(q_btn); 
-    q_btn.onclick = onjudge
-    console.log("a")
+  for (let i = 0; i < kotae.length; i++) {
+      let text = kotae[i];
+      const q_btn = document.createElement("button");
+      q_btn.style.display = "block";
+      q_btn.textContent = text;
+      quesiton_button.appendChild(q_btn); 
+      each.push(q_btn);
+
+      q_btn.onclick = function(){
+        console.log(text);
+        if (text === "2.全ての都市の点の位置が一定の方向にズレていた"){
+          ans1.textContent = "正解！おめでとう！"
+          setTimeout(() => {
+            setTimeout(() => {
+              window.close();
+            }, 1000);
+          }, 1000);
+        } else {
+          if(l < 4){
+            ans1.textContent = "ちがうよ"
+            l += 1;
+            console.log(l)
+            each.forEach(b => b.disabled = true);
+            mozi2();
+            cities.push(archives2.shift());
+            canvas2();
+          }else{
+              ans1.textContent = "全問不正解！ゲームオーバー"
+              setTimeout(() => {
+                setTimeout(() => {
+                  window.close();
+                }, 1000);
+              }, 1000);
+          }
+        }
+      }
   }
 }
 setTimeout(ask,28000) //28000
